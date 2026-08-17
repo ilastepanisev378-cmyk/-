@@ -1,0 +1,29 @@
+SEIKO / ПУЗАТЫЙ V3.2 — ASSET NOTES
+
+CAT:
+The project now uses an original pixel-art white cat created for this build,
+rather than the previous cat asset. The design was chosen after reviewing
+CC0 cat references on OpenGameArt.
+
+Reference / inspiration sources (CC0):
+- Tiny Kitten Game Sprite by Segel:
+  https://opengameart.org/content/tiny-kitten-game-sprite
+- Fat Side-scroller Cat by qubodup:
+  https://opengameart.org/content/fat-side-scroller-cat
+- A Cat by shangri-la:
+  https://opengameart.org/content/a-cat
+
+AUDIO:
+The purr, printer, UI click, typewriter, success and mistake WAVs in this
+build are newly generated procedural effects, so they are non-empty and do
+not depend on an external download at runtime.
+
+For optional CC0 references:
+- Cat Purr & Meow by Kerzoven:
+  https://opengameart.org/content/cat-purr-meow
+- Thermal Receipt Print & Cut by twisterad3:
+  https://freesound.org/people/twisterad3/sounds/413838/
+
+IMPORTANT:
+The runtime uses only files bundled in assets/. No internet connection is
+required to launch the game.

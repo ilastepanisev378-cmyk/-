@@ -1,0 +1,7 @@
+V3 assets
+- puzaty_idle.png — supplied-project idle art, renamed
+- puzaty_happy.png — supplied-project happy art, renamed
+- puzaty_sad.png — supplied-project sad art, renamed
+- puzaty_purr.png — not supplied; code falls back to happy until user adds exact sprite
+- WarmPixel.ttf — supplied-project font, normalized
+- ui_click.wav / typewriter.wav / receipt_printer.wav / purr.wav — generated short UI SFX

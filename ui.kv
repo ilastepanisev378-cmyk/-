@@ -1,0 +1,773 @@
+#:import dp kivy.metrics.dp
+
+<AnimatedScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.045, 0.03, 0.025, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        Color:
+            rgba: 0.12, 0.075, 0.05, 0.28
+        Rectangle:
+            source: app.asset('058c9edbbd235dc0f597b3528417f321.jpg') if app else ''
+            pos: self.pos
+            size: self.size
+
+<PressButton>:
+    background_normal: ''
+    background_down: ''
+    border: 0, 0, 0, 0
+    color: app.PALETTE['cream'] if app else (1, 1, 1, 1)
+    font_name: app.FONT if app else 'Roboto'
+    canvas.before:
+        Color:
+            rgba: self.background_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [12]
+        Color:
+            rgba: 1, 1, 1, 0.06
+        RoundedRectangle:
+            pos: self.x, self.y + self.height * 0.54
+            size: self.width, self.height * 0.46
+            radius: [12]
+
+<MainMenu>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(11)
+
+        Widget:
+            size_hint_y: 0.04
+
+        RoundedPanel:
+            orientation: 'vertical'
+            padding: dp(16)
+            spacing: dp(3)
+            size_hint_y: 0.24
+
+            Label:
+                text: 'СЕЙКО'
+                font_name: app.FONT
+                font_size: '34sp'
+                color: app.PALETTE['cream']
+                bold: True
+
+            Label:
+                text: 'ночная кофейня'
+                font_name: app.FONT
+                font_size: '13sp'
+                color: app.PALETTE['muted']
+
+            Label:
+                id: day_text
+                text: 'День 1 / 14  •  связь +0'
+                font_name: app.FONT
+                font_size: '11sp'
+                color: app.PALETTE['caramel2']
+
+        Widget:
+            size_hint_y: 0.035
+
+        BoxLayout:
+            id: menu_box
+            orientation: 'vertical'
+            spacing: dp(9)
+            size_hint_y: 0.46
+
+            PressButton:
+                text: 'НАЧАТЬ СМЕНУ'
+                on_release: root.start_game()
+
+            PressButton:
+                text: 'ДНЕВНИК'
+                background_color: app.PALETTE['sage']
+                on_release: root.open_diary()
+
+            PressButton:
+                text: 'НОВАЯ ИГРА'
+                background_color: app.PALETTE['coffee2']
+                on_release: root.new_game()
+
+            PressButton:
+                text: 'НАСТРОЙКИ'
+                background_color: app.PALETTE['coffee2']
+                on_release: root.open_settings()
+
+        Widget:
+            size_hint_y: 0.04
+
+        Label:
+            text: '14 вечеров. Маленькая кофейня.\\nИстория о близости, границах, паузах и возвращениях.'
+            font_name: app.FONT
+            font_size: '10sp'
+            color: app.PALETTE['muted']
+            halign: 'center'
+            valign: 'middle'
+            text_size: self.width, None
+            size_hint_y: 0.12
+
+        Widget:
+            size_hint_y: 0.03
+
+
+<CoffeeShop>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(9)
+        spacing: dp(6)
+
+        BoxLayout:
+            size_hint_y: 0.065
+            spacing: dp(5)
+
+            Label:
+                id: day_label
+                text: 'ДЕНЬ 1 / 14'
+                font_name: app.FONT
+                font_size: '14sp'
+                bold: True
+                color: app.PALETTE['cream']
+                size_hint_x: 0.25
+
+            Label:
+                id: weather_label
+                text: ''
+                font_name: app.FONT
+                font_size: '8sp'
+                color: app.PALETTE['muted']
+                halign: 'right'
+                text_size: self.size
+
+            Label:
+                id: relationship
+                text: 'СВЯЗЬ +0'
+                font_name: app.FONT
+                font_size: '8sp'
+                color: app.PALETTE['gold']
+                size_hint_x: 0.20
+                halign: 'center'
+                text_size: self.size
+
+            PressButton:
+                text: '⚙'
+                font_size: '13sp'
+                background_color: app.PALETTE['coffee2']
+                size_hint_x: 0.12
+                on_release: root.open_settings()
+
+        RoundedPanel:
+            id: dialogue_card
+            orientation: 'vertical'
+            padding: dp(10)
+            size_hint_y: 0.16
+
+            TypewriterLabel:
+                id: dialogue
+                text: ''
+                font_name: app.FONT
+                font_size: '12sp'
+                color: app.PALETTE['cream']
+                halign: 'center'
+                valign: 'middle'
+                text_size: self.width, None
+
+        RelativeLayout:
+            id: guest_area
+            size_hint_y: 0.26
+
+            Atmosphere:
+                size_hint: 1, 1
+
+            PuzatyWidget:
+                id: puzaty
+                source: app.asset('puzaty_idle.png')
+                size_hint: None, None
+                size: dp(142), dp(142)
+                pos_hint: {"center_x": 0.5, "center_y": 0.52}
+                fit_mode: "contain"
+
+            Label:
+                text: 'ПУЗАТЫЙ'
+                font_name: app.FONT
+                font_size: '9sp'
+                color: app.PALETTE['muted']
+                size_hint: None, None
+                size: dp(100), dp(22)
+                pos_hint: {"center_x": 0.5, "y": 0.0}
+
+        RoundedPanel:
+            id: npc_card
+            orientation: 'vertical'
+            padding: dp(6)
+            spacing: dp(4)
+            size_hint_y: 0.17
+
+            Label:
+                text: 'ГОСТИ СЕЙКО  •  нажми на любого'
+                font_name: app.FONT
+                font_size: '8sp'
+                color: app.PALETTE['caramel2']
+                size_hint_y: 0.20
+
+            BoxLayout:
+                spacing: dp(5)
+                size_hint_y: 0.80
+
+                NPCWidget:
+                    id: npc1
+                    source: app.asset('npc_lena_0.png')
+                    fit_mode: "contain"
+                    on_release: root.on_npc_click(self.npc_name)
+
+                NPCWidget:
+                    id: npc2
+                    source: app.asset('npc_max_0.png')
+                    fit_mode: "contain"
+                    on_release: root.on_npc_click(self.npc_name)
+
+                NPCWidget:
+                    id: npc3
+                    source: app.asset('npc_ira_0.png')
+                    fit_mode: "contain"
+                    on_release: root.on_npc_click(self.npc_name)
+
+        RoundedPanel:
+            id: recipe_card
+            orientation: 'vertical'
+            padding: dp(7)
+            spacing: dp(3)
+            size_hint_y: 0.25
+
+            Label:
+                id: recipe_hint
+                text: ''
+                font_name: app.FONT
+                font_size: '8sp'
+                color: app.PALETTE['muted']
+                halign: 'center'
+                valign: 'middle'
+                text_size: self.width, None
+                size_hint_y: 0.20
+
+            BoxLayout:
+                size_hint_y: 0.19
+                spacing: dp(3)
+
+                ToggleButton:
+                    text: 'Чёрный'
+                    group: 'base'
+                    state: 'down' if root.base == 'Чёрный чай' else 'normal'
+                    font_name: app.FONT
+                    font_size: '7sp'
+                    on_release: root.select_base('Чёрный чай')
+
+                ToggleButton:
+                    text: 'Зелёный'
+                    group: 'base'
+                    state: 'down' if root.base == 'Зелёный чай' else 'normal'
+                    font_name: app.FONT
+                    font_size: '7sp'
+                    on_release: root.select_base('Зелёный чай')
+
+                ToggleButton:
+                    text: 'Травяной'
+                    group: 'base'
+                    state: 'down' if root.base == 'Травяной чай' else 'normal'
+                    font_name: app.FONT
+                    font_size: '7sp'
+                    on_release: root.select_base('Травяной чай')
+
+                ToggleButton:
+                    text: 'Какао'
+                    group: 'base'
+                    state: 'down' if root.base == 'Какао' else 'normal'
+                    font_name: app.FONT
+                    font_size: '7sp'
+                    on_release: root.select_base('Какао')
+
+                ToggleButton:
+                    text: 'Кофе'
+                    group: 'base'
+                    state: 'down' if root.base == 'Кофе' else 'normal'
+                    font_name: app.FONT
+                    font_size: '7sp'
+                    on_release: root.select_base('Кофе')
+
+            BoxLayout:
+                size_hint_y: 0.19
+                spacing: dp(3)
+
+                ToggleButton:
+                    text: 'Мята'
+                    group: 'addon'
+                    state: 'down' if root.addon == 'Мята' else 'normal'
+                    font_name: app.FONT
+                    font_size: '7sp'
+                    on_release: root.select_addon('Мята')
+
+                ToggleButton:
+                    text: 'Корица'
+                    group: 'addon'
+                    state: 'down' if root.addon == 'Корица' else 'normal'
+                    font_name: app.FONT
+                    font_size: '7sp'
+                    on_release: root.select_addon('Корица')
+
+                ToggleButton:
+                    text: 'Ягоды'
+                    group: 'addon'
+                    state: 'down' if root.addon == 'Ягоды' else 'normal'
+                    font_name: app.FONT
+                    font_size: '7sp'
+                    on_release: root.select_addon('Ягоды')
+
+                ToggleButton:
+                    text: 'Мёд'
+                    group: 'addon'
+                    state: 'down' if root.addon == 'Мёд' else 'normal'
+                    font_name: app.FONT
+                    font_size: '7sp'
+                    on_release: root.select_addon('Мёд')
+
+                ToggleButton:
+                    text: 'Ваниль'
+                    group: 'addon'
+                    state: 'down' if root.addon == 'Ванильный сироп' else 'normal'
+                    font_name: app.FONT
+                    font_size: '7sp'
+                    on_release: root.select_addon('Ванильный сироп')
+
+            BoxLayout:
+                size_hint_y: 0.18
+                spacing: dp(5)
+
+                Label:
+                    id: temp_value
+                    text: '80°C'
+                    font_name: app.FONT
+                    font_size: '10sp'
+                    color: app.PALETTE['cream']
+                    size_hint_x: 0.17
+
+                ProgressBar:
+                    id: temp_bar
+                    max: 100
+                    value: root.temperature
+                    size_hint_x: 0.43
+
+                Label:
+                    text: root.target_text
+                    font_name: app.FONT
+                    font_size: '6.5sp'
+                    color: app.PALETTE['muted']
+                    halign: 'right'
+                    valign: 'middle'
+                    text_size: self.size
+                    size_hint_x: 0.40
+
+        BoxLayout:
+            size_hint_y: 0.075
+            spacing: dp(5)
+
+            PressButton:
+                text: 'РАЗГОВОР'
+                background_color: app.PALETTE['sage']
+                on_release: root.open_conversation()
+
+            PressButton:
+                text: 'ЗАВАРИТЬ'
+                background_color: app.PALETTE['caramel']
+                on_release: root.start_brew()
+
+            PressButton:
+                text: 'МЕНЮ'
+                background_color: app.PALETTE['coffee2']
+                size_hint_x: 0.20
+                on_release: root.back()
+
+
+<MiniGameBase>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(15)
+        spacing: dp(10)
+
+        Label:
+            id: mode_title
+            text: root.mode_name
+            font_name: app.FONT
+            font_size: '21sp'
+            bold: True
+            color: app.PALETTE['cream']
+            size_hint_y: 0.10
+
+
+<TimingMiniGame>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(15)
+        spacing: dp(10)
+
+        Label:
+            id: mode_title
+            text: root.mode_name
+            font_name: app.FONT
+            font_size: '20sp'
+            color: app.PALETTE['cream']
+            bold: True
+            size_hint_y: 0.10
+
+        Label:
+            text: 'Нажми, когда курсор окажется в зелёной зоне.'
+            font_name: app.FONT
+            font_size: '10sp'
+            color: app.PALETTE['muted']
+            halign: 'center'
+            text_size: self.width, None
+            size_hint_y: 0.08
+
+        RoundedPanel:
+            id: game_card
+            orientation: 'vertical'
+            padding: dp(14)
+            size_hint_y: 0.48
+
+            TimingTrack:
+                id: timing_cursor
+                target_start: root.target_start
+                target_end: root.target_end
+                size_hint_y: 0.26
+
+            Label:
+                text: 'зелёная зона = спокойный ритм'
+                font_name: app.FONT
+                font_size: '9sp'
+                color: app.PALETTE['muted']
+                size_hint_y: 0.14
+
+            Widget:
+                size_hint_y: 0.60
+
+        PressButton:
+            text: 'ПОПАСТЬ!'
+            background_color: app.PALETTE['sage']
+            size_hint_y: 0.13
+            on_release: root.hit()
+
+        PressButton:
+            text: 'ОТМЕНИТЬ'
+            background_color: app.PALETTE['coffee2']
+            size_hint_y: 0.10
+            on_release: root.cancel_game()
+
+
+<PouringMiniGame>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(15)
+        spacing: dp(10)
+
+        Label:
+            id: mode_title
+            text: root.mode_name
+            font_name: app.FONT
+            font_size: '20sp'
+            color: app.PALETTE['cream']
+            bold: True
+            size_hint_y: 0.10
+
+        Label:
+            text: 'Останови налив в золотой зоне. Перелить — значит испортить вкус.'
+            font_name: app.FONT
+            font_size: '10sp'
+            color: app.PALETTE['muted']
+            halign: 'center'
+            text_size: self.width, None
+            size_hint_y: 0.10
+
+        RoundedPanel:
+            id: game_card
+            orientation: 'vertical'
+            padding: dp(16)
+            size_hint_y: 0.48
+
+            Label:
+                id: pour_value
+                text: '12%'
+                font_name: app.FONT
+                font_size: '30sp'
+                bold: True
+                color: app.PALETTE['cream']
+                size_hint_y: 0.30
+
+            ProgressBar:
+                id: pour_bar
+                max: 100
+                value: root.fill_value
+                size_hint_y: 0.16
+
+            Label:
+                text: 'Цель: 58–72%'
+                font_name: app.FONT
+                font_size: '10sp'
+                color: app.PALETTE['gold']
+                size_hint_y: 0.16
+
+            Label:
+                id: pour_hint
+                text: 'ЕЩЁ НЕМНОГО...'
+                font_name: app.FONT
+                font_size: '12sp'
+                bold: True
+                color: app.PALETTE['sage']
+                size_hint_y: 0.20
+
+        PressButton:
+            text: 'ОСТАНОВИТЬ НАЛИВ'
+            background_color: app.PALETTE['sage']
+            size_hint_y: 0.13
+            on_release: root.stop_pour()
+
+        PressButton:
+            text: 'ОТМЕНИТЬ'
+            background_color: app.PALETTE['coffee2']
+            size_hint_y: 0.09
+            on_release: root.cancel_game()
+
+
+<StirringMiniGame>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(15)
+        spacing: dp(10)
+
+        Label:
+            id: mode_title
+            text: root.mode_name
+            font_name: app.FONT
+            font_size: '20sp'
+            color: app.PALETTE['cream']
+            bold: True
+            size_hint_y: 0.10
+
+        Label:
+            text: 'Води пальцем по кругу. Ритм важнее скорости.'
+            font_name: app.FONT
+            font_size: '10sp'
+            color: app.PALETTE['muted']
+            halign: 'center'
+            text_size: self.width, None
+            size_hint_y: 0.08
+
+        RoundedPanel:
+            id: game_card
+            orientation: 'vertical'
+            padding: dp(10)
+            size_hint_y: 0.55
+
+            Widget:
+                id: stir_ring
+                size_hint_y: 0.64
+
+            Label:
+                text: root.rhythm_text
+                font_name: app.FONT
+                font_size: '11sp'
+                bold: True
+                color: app.PALETTE['sage'] if root.rhythm_text == 'ИДЕАЛЬНЫЙ РИТМ' else app.PALETTE['caramel2']
+                size_hint_y: 0.10
+
+            ProgressBar:
+                max: 1
+                value: root.progress_value
+                size_hint_y: 0.06
+
+            Label:
+                id: speed_text
+                text: root.speed_text
+                font_name: app.FONT
+                font_size: '10sp'
+                color: app.PALETTE['cream']
+                size_hint_y: 0.20
+
+        PressButton:
+            text: 'ОСТАНОВИТЬСЯ'
+            background_color: app.PALETTE['sage']
+            size_hint_y: 0.13
+            on_release: root.finish_stir()
+
+        PressButton:
+            text: 'ОТМЕНИТЬ'
+            background_color: app.PALETTE['coffee2']
+            size_hint_y: 0.09
+            on_release: root.cancel_game()
+
+
+<IngredientMiniGame>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(12)
+        spacing: dp(7)
+
+        Label:
+            id: mode_title
+            text: root.mode_name
+            font_name: app.FONT
+            font_size: '20sp'
+            color: app.PALETTE['cream']
+            bold: True
+            size_hint_y: 0.09
+
+        Label:
+            text: 'Двигай чашку. Лови нужное, избегай соли и льда.'
+            font_name: app.FONT
+            font_size: '10sp'
+            color: app.PALETTE['muted']
+            size_hint_y: 0.07
+
+        RelativeLayout:
+            id: falling
+            size_hint_y: 0.61
+
+            canvas.before:
+                Color:
+                    rgba: 0.07, 0.045, 0.035, 0.85
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [16]
+
+            PressButton:
+                id: cup
+                text: '☕'
+                font_size: '22sp'
+                size_hint: None, None
+                size: dp(82), dp(48)
+                pos_hint: {"center_x": 0.5, "y": 0.02}
+
+        Label:
+            id: score_text
+            text: 'Поймано: 0  •  Ошибок: 0'
+            font_name: app.FONT
+            font_size: '10sp'
+            color: app.PALETTE['cream']
+            size_hint_y: 0.08
+
+        PressButton:
+            text: 'ГОТОВО'
+            background_color: app.PALETTE['sage']
+            size_hint_y: 0.10
+            on_release: root.finish_ingredients()
+
+        PressButton:
+            text: 'ОТМЕНИТЬ'
+            background_color: app.PALETTE['coffee2']
+            size_hint_y: 0.08
+            on_release: root.cancel_game()
+
+
+<DiaryScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(14)
+        spacing: dp(9)
+
+        Label:
+            text: 'ДНЕВНИК ПУЗАТОГО'
+            font_name: app.FONT
+            font_size: '21sp'
+            color: app.PALETTE['cream']
+            bold: True
+            size_hint_y: 0.09
+
+        RoundedPanel:
+            id: diary_card
+            orientation: 'vertical'
+            padding: dp(12)
+
+            ScrollView:
+                do_scroll_x: False
+
+                Label:
+                    id: diary_text
+                    text: 'Пока пусто.'
+                    font_name: app.FONT
+                    font_size: '11sp'
+                    color: app.PALETTE['cream']
+                    halign: 'left'
+                    valign: 'top'
+                    text_size: self.width, None
+                    size_hint_y: None
+                    height: self.texture_size[1]
+
+        PressButton:
+            text: 'НАЗАД'
+            size_hint_y: 0.10
+            background_color: app.PALETTE['coffee2']
+            on_release: root.back()
+
+
+<ReceiptPopup>:
+    size_hint: 0.88, 0.82
+    auto_dismiss: False
+    background_color: 0, 0, 0, 0
+    separator_color: 0, 0, 0, 0
+
+    RoundedPanel:
+        size_hint: 0.92, 0.94
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        orientation: 'vertical'
+        padding: dp(16)
+        spacing: dp(7)
+        canvas.before:
+            Color:
+                rgba: 0.95, 0.90, 0.78, 1
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [dp(12)]
+
+        Label:
+            text: 'СЕЙКО / 58 mm'
+            font_name: app.FONT
+            font_size: '12sp'
+            color: app.PALETTE['ink']
+            size_hint_y: None
+            height: dp(26)
+
+        Label:
+            text: 'ТЕРМОЧЕК'
+            font_name: app.FONT
+            font_size: '17sp'
+            color: app.PALETTE['ink']
+            size_hint_y: None
+            height: dp(30)
+
+        ScrollView:
+            do_scroll_x: False
+            bar_width: dp(4)
+
+            Label:
+                id: receipt_text
+                text: ''
+                font_name: app.FONT
+                font_size: '10sp'
+                color: app.PALETTE['ink']
+                halign: 'left'
+                valign: 'top'
+                text_size: self.width, None
+                size_hint_y: None
+                height: max(self.texture_size[1], dp(100))
+
+        PressButton:
+            id: save_btn
+            text: 'СОХРАНИТЬ В ДНЕВНИК'
+            disabled: True
+            size_hint_y: None
+            height: dp(44)
+            background_color: app.PALETTE['sage']
+            on_release: root.save_receipt()
